@@ -23,11 +23,9 @@ function loadFolderContent(folder) {
                 const listItem = document.createElement('li');
                 const icon = icons.get(file.Type.split("/")[0]);
 
-                if(file.Type === "dir") {
-                    listItem.innerHTML = "<a onclick=\"navigateToFolder(\'" + file.Name + "\')\">" + icon + file.Name + "</a>";
-                } else {
-                    listItem.innerHTML = "<a onclick=\"navigateToFile(\'" + file.Name + "\')\">" + icon + file.Name + "</a>";
-                }
+                const path = file.Name + (file.Type === "dir" ? "/" : "");
+
+                listItem.innerHTML = "<a onclick=\"navigateTo(\'" + path + "\')\">" + icon + file.Name + "</a>";
 
                 contentList.appendChild(listItem);
             });

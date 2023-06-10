@@ -1,5 +1,4 @@
 function init() {
-
     startRouter();
 
     if(!isLoggedIn()) {
@@ -9,14 +8,14 @@ function init() {
     }
 
     showElement("content");
-    showElement("logoutButton");
+    showElement("navBar");
 
     callNavigation();
 }
 
 function toggleLoginForm() {
     toggleElement("loginForm");
-    toggleElement("logoutButton");
+    toggleElement("navBar");
     toggleElement("content");
 }
 

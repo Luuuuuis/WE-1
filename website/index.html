@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Index</title>
 
-    <link rel="stylesheet" href="./css/main.css">
+    <link href="./css/main.css" rel="stylesheet">
 
     <script src="./js/main.js"></script>
     <script src="./js/router.js"></script>
@@ -12,11 +13,11 @@
     <script src="./js/folder.js"></script>
     <script src="./js/file.js"></script>
 </head>
-<body onload="init()">
+<body onload="init()" style="margin: 0;">
 
 <div id="auth">
 
-    <div id="loginForm" class="hidden">
+    <div class="hidden" id="loginForm" style="margin: auto; width: 50%; text-align: center; padding: 2vh">
 
         <form onsubmit="login(); return false;">
             <label for="username">Username:</label>
@@ -32,37 +33,70 @@
 
     </div>
 
-    <div id="logoutButton" class="hidden">
-        <button onclick="logout()">Logout</button>
-    </div>
 
 </div>
 
-<div id="content" class="hidden">
+<div id="navBar" class="hidden">
 
+    <table style="width: 100%; background-color: aliceblue">
+        <tbody>
+        <tr>
+            <td>
+                <p>File Browser</p>
+            </td>
+            <td></td>
+            <td style="text-align: end">
+                <div id="logoutButton">
+                    <button onclick="logout()">Logout</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
+</div>
+
+<div class="hidden" id="content" style="margin: 1vh">
 
     <h3 id="breadcrumb">
-        <a onclick="naviagteBack()" id="breadcrumbBack" style="cursor: pointer; color: blue">↩</a>
+        <a id="breadcrumbBack" onclick="navigateBack()" style="cursor: pointer; color: blue">↩</a>
         <a id="breadcrumbText">ye</a>
     </h3>
 
     <div id="views">
-        <div id="folderView" class="view hidden">
+        <div class="view hidden" id="folderView">
             <ul id="contentList"></ul>
         </div>
 
-        <div id="videoView" class="view hidden">
-            <video src="data:video/mp4;base64," controls class="contentSource" style="width: 50%; height: 50%"></video>
+        <div id="downloadView" class="view hidden">
+            <button onclick="downloadFile()">Download 💾</button>
         </div>
 
-        <div id="imageView" class="view hidden">
-            <img src="data:image/png;base64," class="contentSource" />
+        <div class="view hidden" id="videoView">
+            <video class="contentSource" controls style="width: 100%; height: 50%"></video>
         </div>
 
-        <div id="audioView" class="view hidden">
-            <audio src="data:audio/mp3;base64," controls class="contentSource"></audio>
+        <div class="view hidden" id="imageView">
+            <img class="contentSource" style="width: 100%; height: 50%"/>
         </div>
+
+        <div class="view hidden" id="audioView">
+            <audio class="contentSource" controls></audio>
+        </div>
+
+        <div class="view hidden" id="textView">
+            <form onsubmit="editTextContent(); return false;">
+                <label for="textViewSrc">Text:</label>
+                <br>
+                <textarea id="textViewSrc" style="width: 100%; height: 50vh"></textarea>
+                <br>
+                <input type="submit" value="Speichern">
+                <button type="reset">Verwerfen</button>
+                <button onclick="callNavigation()" type="button">Zurücksetzen</button>
+            </form>
+        </div>
+
+
     </div>
 
 

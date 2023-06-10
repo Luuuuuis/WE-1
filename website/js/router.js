@@ -18,17 +18,25 @@ function callNavigation() {
        hideElement(view.id);
     });
 
-    type.forEach(function (value, key) {
-       if (window.location.hash.endsWith(key)) {
-           if(value === "folder") {
-                loadFolderContent(window.location.hash.replace('#', ''));
-           } else {
-               loadFileContent(window.location.hash.replace('#', ''));
-           }
+    const fileType = getFileType();
+    if(fileType === "folder") {
+        loadFolderContent(window.location.hash.replace('#', ''));
+    } else {
+        loadFileContent(window.location.hash.replace('#', ''), fileType);
+        showElement("downloadView");
+    }
 
-           showElement(value + "View");
-       }
+    showElement(fileType + "View");
+}
+
+function getFileType() {
+    let fileType;
+    type.forEach(function (value, key) {
+        if (window.location.hash.endsWith(key)) {
+            fileType = value;
+        }
     });
+    return fileType;
 }
 
 function startRouter() {
@@ -39,25 +47,24 @@ function startRouter() {
     console.log(window.location.hash)
 }
 
-function navigateToFolder(folder) {
-    location.assign(window.location.hash + folder + "/")
-}
-function navigateToFile(file) {
-    location.assign(window.location.hash + file)
+function navigateTo(path) {
+    location.assign(window.location.hash + path);
 }
 
-function naviagteBack() {
+function navigateBack() {
     history.back();
 }
 
+function getCurrentPath() {
+    return window.location.hash.replace('#/', '');
+}
 function setBreadcrumb() {
-    const path = window.location.hash.replace('#/', '');
-    if(path === "") {
+    if(getCurrentPath() === "") {
         document.getElementById("breadcrumbText").innerHTML = "data";
         hideElement("breadcrumbBack");
         return;
     }
 
-    document.getElementById("breadcrumbText").innerHTML = path;
+    document.getElementById("breadcrumbText").innerHTML = getCurrentPath();
     showElement("breadcrumbBack");
 }
