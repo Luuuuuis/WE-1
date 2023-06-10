@@ -25,6 +25,10 @@ function loadFileContent(file, type) {
                 element.src = data + xhr.responseText;
             });
         } else {
+            if(getFileType() === "text") {
+                return;
+            }
+
             alert(JSON.parse(xhr.responseText).error);
         }
     }
