@@ -1,5 +1,5 @@
 // to handle the manual back button in the browser
-window.addEventListener('popstate', function (e) {
+window.addEventListener('popstate', function () {
     callNavigation();
 });
 
@@ -16,6 +16,7 @@ type.set('.jpeg', 'image');
 
 function callNavigation() {
     if (!isLoggedIn()) {
+        console.error("User is not logged in! Not doing anything! >:(");
         return;
     }
 
@@ -23,11 +24,11 @@ function callNavigation() {
 
     //hide all views to reset to default
     document.querySelectorAll(".view").forEach(function (view) {
-       hideElement(view.id);
+        hideElement(view.id);
     });
 
     const fileType = getFileType();
-    if(fileType === "folder") {
+    if (fileType === "folder") {
         loadFolderContent(window.location.hash.replace('#', ''));
         showElement("mkdirAction");
         showElement("touchTextFileAction");
@@ -69,8 +70,9 @@ function navigateBack() {
 function getCurrentPath() {
     return window.location.hash.replace('#/', '');
 }
+
 function setBreadcrumb() {
-    if(getCurrentPath() === "") {
+    if (getCurrentPath() === "") {
         document.getElementById("breadcrumbText").innerHTML = "data";
         hideElement("breadcrumbBack");
         return;
