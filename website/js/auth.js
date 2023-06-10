@@ -49,10 +49,20 @@ function logout() {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:8080/logout', true);
     xhr.setRequestHeader('Authorization', 'Basic ' + getAuthCode());
+
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState !== 4) {
+            return;
+        }
+
+        if(xhr.status !== 200) {
+            alert(JSON.parse(xhr.responseText).error);
+        }
+    }
+
     xhr.send();
 
-    //TODO: Error Handling
-
+    // remove session anyways (even if logout failed) just to be sure
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('username');
     toggleLoginForm();

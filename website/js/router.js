@@ -5,12 +5,20 @@ window.addEventListener('popstate', function (e) {
 
 const type = new Map();
 type.set('/', 'folder');
+
 type.set('.mp4', 'video');
 type.set('.txt', 'text');
 type.set('.mp3', 'audio');
+
 type.set('.png', 'image');
+type.set('.jpg', 'image');
+type.set('.jpeg', 'image');
 
 function callNavigation() {
+    if (!isLoggedIn()) {
+        return;
+    }
+
     setBreadcrumb();
 
     //hide all views to reset to default
@@ -21,9 +29,12 @@ function callNavigation() {
     const fileType = getFileType();
     if(fileType === "folder") {
         loadFolderContent(window.location.hash.replace('#', ''));
+        showElement("mkdirAction");
+        showElement("touchTextFileAction");
+        showElement("uploadAction");
     } else {
         loadFileContent(window.location.hash.replace('#', ''), fileType);
-        showElement("downloadView");
+        showElement("downloadAction");
     }
 
     showElement(fileType + "View");
@@ -32,7 +43,7 @@ function callNavigation() {
 function getFileType() {
     let fileType;
     type.forEach(function (value, key) {
-        if (window.location.hash.endsWith(key)) {
+        if (window.location.hash.toLowerCase().endsWith(key.toLowerCase())) {
             fileType = value;
         }
     });

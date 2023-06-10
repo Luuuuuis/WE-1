@@ -10,9 +10,11 @@ function loadFileContent(file, type) {
     xhr.setRequestHeader('Authorization', 'Basic ' + getAuthCode());
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("res: " + xhr.responseText);
+        if(xhr.readyState !== 4) {
+            return;
+        }
 
+        if (xhr.status === 200) {
             if (type === "text") {
                 document.getElementById("textViewSrc").value = atob(xhr.responseText);
                 return;
@@ -22,6 +24,8 @@ function loadFileContent(file, type) {
                 const data = dataType.get(type);
                 element.src = data + xhr.responseText;
             });
+        } else {
+            alert(JSON.parse(xhr.responseText).error);
         }
     }
 
@@ -69,10 +73,76 @@ function editTextContent() {
             return;
         }
 
-        alert(JSON.parse(xhr.responseText).message);
+        if (xhr.status === 200) {
+            alert(JSON.parse(xhr.responseText).message);
+        } else {
+            alert(JSON.parse(xhr.responseText).error);
+        }
     }
 
     xhr.send("content=" + base64);
+}
 
+function createTextFile() {
+    const fileName = prompt("Enter file name");
 
+    if(fileName === null || fileName === "") {
+        alert("Invalid file name");
+        return;
+    }
+
+    navigateTo(fileName + ".txt");
+
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('POST', 'http://localhost:8080/' + getCurrentPath() + fileName + ".txt", true);
+    // xhr.setRequestHeader('Authorization', 'Basic ' + getAuthCode());
+    //
+    // xhr.onreadystatechange = function () {
+    //     if (xhr.readyState !== 4) {
+    //         return;
+    //     }
+    //
+    //     if (xhr.status === 200) {
+    //         alert(JSON.parse(xhr.responseText).message);
+    //         navigateTo(getCurrentPath() + fileName + ".txt");
+    //     } else {
+    //         alert(JSON.parse(xhr.responseText).error);
+    //     }
+    // }
+    //
+    // xhr.send();
+}
+
+function uploadFile() {
+    const input = document.createElement("input");
+    input.type = "file";
+
+    input.onchange = function () {
+        const selectedFile = input.files[0];
+        console.log("datei ausgewählt: " + selectedFile.name);
+
+        const formData = new FormData();
+        formData.append("newFile", selectedFile);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/' + getCurrentPath() + selectedFile.name, true);
+        xhr.setRequestHeader('Authorization', 'Basic ' + getAuthCode());
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) {
+                return;
+            }
+
+            if (xhr.status === 200) {
+                alert(JSON.parse(xhr.responseText).message);
+                callNavigation();
+            } else {
+                alert(JSON.parse(xhr.responseText).error);
+            }
+        }
+
+        xhr.send(formData);
+    }
+
+    input.click();
 }
