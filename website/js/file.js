@@ -42,8 +42,11 @@ function downloadFile() {
     xhr.setRequestHeader('Authorization', 'Basic ' + getAuthCode());
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
+        if (xhr.readyState !== 4) {
+            return;
+        }
 
+        if (xhr.status === 200) {
             const data = getFileType() === "text" ? atob(xhr.responseText) : xhr.responseText;
             const link = document.createElement('a');
             const fileName = getCurrentPath().substring(getCurrentPath().lastIndexOf("/") + 1);
@@ -55,6 +58,8 @@ function downloadFile() {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        } else {
+            alert(JSON.parse(xhr.responseText).error);
         }
     }
 
@@ -96,25 +101,6 @@ function createTextFile() {
     }
 
     navigateTo(fileName + ".txt");
-
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('POST', 'http://localhost:8080/' + getCurrentPath() + fileName + ".txt", true);
-    // xhr.setRequestHeader('Authorization', 'Basic ' + getAuthCode());
-    //
-    // xhr.onreadystatechange = function () {
-    //     if (xhr.readyState !== 4) {
-    //         return;
-    //     }
-    //
-    //     if (xhr.status === 200) {
-    //         alert(JSON.parse(xhr.responseText).message);
-    //         navigateTo(getCurrentPath() + fileName + ".txt");
-    //     } else {
-    //         alert(JSON.parse(xhr.responseText).error);
-    //     }
-    // }
-    //
-    // xhr.send();
 }
 
 function uploadFile() {

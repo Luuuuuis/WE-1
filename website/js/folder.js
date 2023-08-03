@@ -30,7 +30,7 @@ function loadFolderContent(folder) {
 
                 const path = file.Name + (file.Type === "dir" ? "/" : "");
 
-                listItem.innerHTML = "<a onclick=\"navigateTo(\'" + path + "\')\">" + icon + file.Name + "</a>";
+                listItem.innerHTML = "<a onclick=\"navigateTo(\'" + path + "\')\" style='cursor: pointer;'>" + icon + file.Name + "</a>";
 
                 contentList.appendChild(listItem);
             });

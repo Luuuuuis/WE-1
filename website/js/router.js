@@ -17,6 +17,12 @@ type.set('.jpeg', 'image');
 function callNavigation() {
     if (!isLoggedIn()) {
         console.error("User is not logged in! Not doing anything! >:(");
+        if(window.location.hash !== "#/login") {
+            location.replace("./#/login");
+            showElement("loginForm");
+            hideElement("content");
+            hideElement("navBar");
+        }
         return;
     }
 

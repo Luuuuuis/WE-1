@@ -1,3 +1,9 @@
 .hidden {
     display: none;
 }
+
+.contentCenter {
+    display: grid;
+    justify-content: center;
+    height: 100%;
+}
